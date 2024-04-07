@@ -34,6 +34,15 @@ jobs:
       # - name: Publish package
       #   run: poetry publish --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}
 
+      - name: Login to Docker Hub
+          uses: docker/login-action@v1
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - name: Build Docker image
         run: |
-          docker build --build-arg CLOUD_ORBIT_API="cloud-orbit-api==0.1.1" -t cloud-orbit-api:0.1.1 microservice
+          docker build --build-arg CLOUD_ORBIT_API="cloud-orbit-api" -t cloud-orbit-api-image microservice
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/cloud-orbit-api-image:latest
