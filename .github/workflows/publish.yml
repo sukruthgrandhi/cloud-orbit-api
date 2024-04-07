@@ -33,3 +33,7 @@ jobs:
 
       - name: Publish package
         run: poetry publish --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker build --build-arg CLOUD_ORBIT_API="cloud-orbit-api=0.1.1" -t cloud-orbit-api:0.1.1 microservice
