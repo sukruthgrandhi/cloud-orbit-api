@@ -36,4 +36,4 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --build-arg CLOUD_ORBIT_API="cloud-orbit-api=0.1.1" -t cloud-orbit-api:0.1.1 microservice
+          docker build --build-arg CLOUD_ORBIT_API="cloud-orbit-api==0.1.1" -t cloud-orbit-api:0.1.1 microservice
