@@ -1,0 +1,9 @@
+# Ignore .venv directory
+.venv/
+
+# Ignore dist directory
+dist/
+
+test.db
+
+__pycache__
