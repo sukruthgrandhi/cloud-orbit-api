@@ -42,7 +42,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --build-arg CLOUD_ORBIT_API="cloud-orbit-api" -t cloud-orbit-api-image microservice
+          docker build --build-arg CLOUD_ORBIT_API="cloud-orbit-api" -t ${{ secrets.DOCKER_USERNAME }}/cloud-orbit-api-image microservice
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/cloud-orbit-api-image:latest
