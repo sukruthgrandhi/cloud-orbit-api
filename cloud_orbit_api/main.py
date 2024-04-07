@@ -3,7 +3,7 @@ import os
 from cloud_orbit_api.models import item
 from cloud_orbit_api.db_factory import SQLiteSingleton
 # Define the FastAPI app
-app = FastAPI()
+app = FastAPI(root_path="/server")
 SQLiteSingleton.get_instance()
 
 @app.get("/")
