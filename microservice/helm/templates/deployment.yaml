@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-orbit-api
+  labels:
+    app: cloud-orbit-api
+  namespace: "{{ .Values.namespace }}"
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: cloud-orbit-api
+  template:
+    metadata:
+      labels:
+        app: cloud-orbit-api
+    spec:
+      containers:
+      - command:
+        - uvicorn
+        - main:app
+        - --root-path
+        - backend
+        - --host
+        - "0.0.0.0"
+        - --port
+        - "8000"
+        name: cloud-orbit-api
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8000  # Port on which your FastAPI application is running
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 30
+          timeoutSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 5
+          timeoutSeconds: 10
+        env:
+        - name: SQLITE_DB_DIR
+          value: /mnt
+        - name: SQLITE_DB_NAME
+          value: database.db
+        volumeMounts:
+        - name: host-volume
+          mountPath: /mnt/
+          readOnly: false
+      volumes:
+      - name: host-volume
+        hostPath:
+          path: /usr/share/sql/
