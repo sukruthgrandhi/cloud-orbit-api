@@ -50,9 +50,9 @@ jobs:
           echo "${{ steps.bump_version.outputs.next-version }}"
           echo ${{ steps.bump_version.outputs.next-version }}
           echo "${{ steps.bump_version.outputs.next-version }}" > version.txt
-          sed -i "s/tag: \".*\"/tag: \"${{ steps.bump_version.outputs.next-version }}\"/" /microservice/helm/values.yaml
+          sed -i "s/tag: \".*\"/tag: \"${{ steps.bump_version.outputs.next-version }}\"/" microservice/helm/values.yaml
           sed -i '0,/^version =/s/^version =.*/version = "${{ steps.bump_version.outputs.next-version }}"/' pyproject.toml
-          
+
       - name: Build package
         run: poetry build
 
