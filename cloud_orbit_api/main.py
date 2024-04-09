@@ -8,7 +8,7 @@ SQLiteSingleton.get_instance()
 
 @app.get("/")
 async def root():
-    return {"Hello": "World!"}
+    return {"Hello": "Cloud"}
 
 
 # Endpoint to create an item
