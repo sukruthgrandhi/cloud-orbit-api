@@ -10,7 +10,7 @@ spec:
   - host: "{{ .Values.host }}"
     http:
       paths:
-        - path: /backend(/|$)(.*)
+        - path: /backend/
           pathType: Prefix
           backend:
             service:
