@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException
 import os
 from cloud_orbit_api.models import item
 from cloud_orbit_api.db_factory import SQLiteSingleton
+from fastapi.middleware.cors import CORSMiddleware
+
 # Define the FastAPI app
 app = FastAPI(root_path="backend")
 app.add_middleware(
