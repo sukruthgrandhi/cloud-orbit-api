@@ -32,9 +32,6 @@ jobs:
       - name: Run pytest
         run: poetry run pytest
 
-      - name: Build package
-        run: poetry build
-
       - name: Read Version Number
         id: read-version
         run: |
@@ -47,6 +44,9 @@ jobs:
         with:
           current-version: "${{ steps.read-version.outputs.VERSION }}"
           version-fragment: 'bug'
+
+      - name: Build package
+        run: poetry build -v ${{ steps.bump_version.outputs.next-version }}
 
       - name: Publish package
         run: poetry publish --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }} -v ${{ steps.bump_version.outputs.next-version }}
