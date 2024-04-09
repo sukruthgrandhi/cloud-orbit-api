@@ -45,11 +45,18 @@ jobs:
           current-version: "${{ steps.read-version.outputs.VERSION }}"
           version-fragment: 'bug'
 
+      - name: Commit Updated Version
+        run: |
+          echo "${{ steps.bump_version.outputs.next-version }}"
+          echo ${{ steps.bump_version.outputs.next-version }}
+          echo "${{ steps.bump_version.outputs.next-version }}" > version.txt
+          sed -i "s/tag: \".*\"/tag: \"${{ steps.bump_version.outputs.next-version }}\"/" /microservice/helm/values.yaml
+          sed -i '0,/^version =/s/^version =.*/version = "${{ steps.bump_version.outputs.next-version }}"/' pyproject.toml
       - name: Build package
-        run: poetry build -v ${{ steps.bump_version.outputs.next-version }}
+        run: poetry build
 
       - name: Publish package
-        run: poetry publish --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }} -v ${{ steps.bump_version.outputs.next-version }}
+        run: poetry publish --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}
 
       - name: Login to Docker Hub
         uses: docker/login-action@v1
