@@ -70,19 +70,13 @@ jobs:
         with:
           time: '60s'
 
-
-      - name: Build Docker image
-        run: |
-          docker build --build-arg CLOUD_ORBIT_API="cloud-orbit-api==${{ steps.bump_version.outputs.next-version }}" -t ${{ secrets.DOCKERHUB_USERNAME }}/cloud-orbit-api-image:${{ steps.bump_version.outputs.next-version }} microservice
-
+      - uses: nick-fields/retry@v3
+        with:
+          timeout_seconds: 180
+          max_attempts: 3
+          command: docker build --build-arg CLOUD_ORBIT_API="cloud-orbit-api==${{ steps.bump_version.outputs.next-version }}" -t ${{ secrets.DOCKERHUB_USERNAME }}/cloud-orbit-api-image:${{ steps.bump_version.outputs.next-version }} microservice
+          
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/cloud-orbit-api-image:${{ steps.bump_version.outputs.next-version }}
-
-      - name: Commit Updated Version
-        run: |
-          echo "${{ steps.bump_version.outputs.next-version }}"
-          echo ${{ steps.bump_version.outputs.next-version }}
-          echo "${{ steps.bump_version.outputs.next-version }}" > version.txt
-          sed -i "s/tag: \".*\"/tag: \"${{ steps.bump_version.outputs.next-version }}\"/" /microservice/helm/values.yaml
 
       - uses: stefanzweifel/git-auto-commit-action@v5
