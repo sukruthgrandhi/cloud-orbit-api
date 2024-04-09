@@ -5,7 +5,7 @@ from cloud_orbit_api.db_factory import SQLiteSingleton
 from fastapi.middleware.cors import CORSMiddleware
 
 # Define the FastAPI app
-app = FastAPI(root_path="backend")
+app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -26,6 +26,17 @@ async def create_item(item: item):
     SQLiteSingleton._instance.cursor.execute(''' INSERT INTO items (name, description) VALUES (?, ?)''', (item.name, item.description))
     SQLiteSingleton._instance.conn.commit()
     return {"name": item.name, "description": item.description}
+
+# Delete item by index
+@app.delete("/items/{item_index}")
+async def delete_item(item_index: int):
+    try:
+        # Delete the item from the database
+        SQLiteSingleton._instance.cursor.execute('''DELETE FROM items WHERE id = ?''', (item_index,))
+        SQLiteSingleton._instance.conn.commit()
+        return {"message": f"Item at index {item_index} deleted successfully"}
+    except Exception as e:
+        return {"error": str(e)}
 
 # Endpoint to retrieve an item by ID
 @app.get("/items/all")
