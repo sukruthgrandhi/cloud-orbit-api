@@ -4,6 +4,13 @@ from cloud_orbit_api.models import item
 from cloud_orbit_api.db_factory import SQLiteSingleton
 # Define the FastAPI app
 app = FastAPI(root_path="backend")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 SQLiteSingleton.get_instance()
 
 @app.get("/")
