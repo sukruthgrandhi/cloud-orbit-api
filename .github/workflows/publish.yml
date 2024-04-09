@@ -65,6 +65,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Sleep for 60 seconds so that python package is available
+        uses: kibertoad/wait-action@1.0.1
+        with:
+          time: '60s'
+
+
       - name: Build Docker image
         run: |
           docker build --build-arg CLOUD_ORBIT_API="cloud-orbit-api==${{ steps.bump_version.outputs.next-version }}" -t ${{ secrets.DOCKERHUB_USERNAME }}/cloud-orbit-api-image:${{ steps.bump_version.outputs.next-version }} microservice
