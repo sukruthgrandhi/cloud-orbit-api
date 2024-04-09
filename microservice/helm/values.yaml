@@ -4,7 +4,8 @@
 
 replicaCount: 2
 namespace: cloud-orbit-api
-host: cloudorbit.eastus.cloudapp.azure.com
+# host: cloudorbit.eastus.cloudapp.azure.com
+host: mtonib.com
 
 image:
   repository: sukruthgrandhi/cloud-orbit-api-image
