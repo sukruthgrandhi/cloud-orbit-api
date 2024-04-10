@@ -5,7 +5,7 @@ from cloud_orbit_api.db_factory import SQLiteSingleton
 from fastapi.middleware.cors import CORSMiddleware
 
 # Define the FastAPI app
-app = FastAPI()
+app = FastAPI(root_path="backend")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
