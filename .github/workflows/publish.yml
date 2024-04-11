@@ -1,4 +1,4 @@
-name: Frontend docker publish
+name: Backend docker publish
 
 on:
   push:
